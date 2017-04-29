@@ -1,0 +1,54 @@
+<div class="row-fluid" style="margin-top: 20px;">
+   	<div class="row">
+		<div class="col-md-3" align="left">
+			<select class="form-control" ng-model='pageSize' ng-change="loadPagination()" >
+		       <option value='5' ng-selected="5">Mostrar 5 itens por pagina</option>
+		       <option value='10'>Mostrar 10 itens por pagina</option>
+		       <option value='25'>Mostrar 25 itens por pagina</option>
+		       <option value='100'>Mostrar 100 itens por pagina</option>
+		    </select>
+		</div>
+		<div class="col-md-6"></div>
+		<div class="col-md-3" align="right">
+			<input class="form-control" type="text" ng-keyup="loadPagination()" ng-model="criterionSearch" placeholder="O que deseja buscar?" />
+		</div>
+	</div>
+	
+	<div ng-transclude></div>
+	
+	<div class="tableVazia table-responsive" ng-if="isGridVazia" align="center">
+		 Nenhum registro dispon&iacute;vel para visualiza&ccedil;&atilde;o
+	</div>
+   
+	<div class="row">
+		<div class="col-md-6 alingPagination" align="left">
+			<ul class="pagination">
+				Mostrando {{registroPaginaInicial}} a {{registroPaginaFinal}} de {{totalRegistros}} registro(s)
+				<div ng-if="criterionSearch.length > 0">(Filtrado de {{totalGeralRegistros}} registro(s))</div>
+			</ul>
+		</div>
+		<div class="col-md-6 alingPagination" align="right">
+			<ul class="pagination"> 
+				<li ng-class="{disabled: currentPage <= 0}"> 
+					<a href="" ng-click="goToPage(0)" class="ng-binding">&laquo;</a> 
+				</li>
+				
+				<li ng-class="{disabled: currentPage <= 0}"> 
+					<a href="" ng-click="goToPage(currentPage - 1)" class="ng-binding">&lsaquo;</a> 
+				</li> 
+				
+				<li ng-repeat="page in pageSequence" ng-class="{active: currentPage + 1 == page}"> 
+					<a href="" ng-click="goToPage(page-1)" ng-bind="page" class="ng-binding"></a> 
+				</li>
+				
+				<li ng-class="{disabled: currentPage == numeroPaginas - 1 || numeroPaginas == 0}"> 
+					<a ng-click="goToPage(currentPage + 1)" class="ng-binding">&rsaquo;</a> 
+				</li> 
+
+				<li ng-class="{disabled: currentPage == numeroPaginas - 1 || numeroPaginas == 0}"> 
+					<a ng-click="goToPage(numeroPaginas - 1)" class="ng-binding">&raquo;</a> 
+				</li> 
+			</ul> 
+		</div>
+	</div>
+</div>

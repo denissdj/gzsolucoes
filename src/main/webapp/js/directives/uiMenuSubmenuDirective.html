@@ -1,0 +1,10 @@
+<li ng-class="{'is-selected': isSelectedSubmenu}">
+	<a id="menu-{{id}}" data-toggle="collapse" data-target="#{{id}}" ng-click="selected()">
+		<span ng-class="{'glyphicon-menu-down': isMenuAberto, 'glyphicon-menu-right' : !isMenuAberto}" 
+		class="glyphicon" aria-hidden="true"></span>
+		&nbsp;&nbsp;{{name}}
+	</a>
+	<ul class="nav collapse" ng-class="{'in': isSelectedSubmenu}" id="{{id}}" role="menu" aria-labelledby="menu-{{id}}" style="margin-left: 15px;">
+		<div ng-transclude></div>
+	</ul>
+</li>

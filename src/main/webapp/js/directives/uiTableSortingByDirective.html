@@ -1,0 +1,9 @@
+<th ng-click="order()" style="cursor: pointer;">{{name}}
+	<span class="glyphicon sort-icon"
+		  ng-if="show" 
+		  ng-class="{'glyphicon glyphicon-sort-by-attributes':!direction,'glyphicon glyphicon-sort-by-attributes-alt':direction}">
+	</span>
+	<span class="glyphicon glyphicon-sort"
+		  ng-if="!show" style="opacity: 0.15;">
+	</span>
+</th>

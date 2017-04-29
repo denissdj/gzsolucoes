@@ -1,0 +1,122 @@
+<legend>Cadastro de Usu&aacute;rios</legend>
+
+<div class="top-bar">
+	<div class="pull-right">
+		<button class="btn btn-primary" data-toggle="modal" ng-click="adicionarUsuario()">Adicionar Usu&aacute;rio</button>
+	</div>
+</div>
+
+<ui-table list="usuarios" page-size="pageSizeUsuarios" criterion-search="criterioBuscaUsuarios" start-from="startFromUsuarios">
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<tr ui-table-head>
+				<th ui-table-head-th sorting-by="ordenacao" direction="direcao" init="true" name="C&oacute;digo" order-by="id"/>
+				<th ui-table-head-th sorting-by="ordenacao" direction="direcao" name="Nome" order-by="nome"/>
+				<th ui-table-head-th sorting-by="ordenacao" direction="direcao" name="Idade" order-by="idade"/>
+				<th ui-table-head-th sorting-by="ordenacao" direction="direcao" name="Sexo" order-by="sexo"/>
+				<th ui-table-head-th sorting-by="ordenacao" direction="direcao" name="Ultima Localiza&ccedil;&atilde;o" order-by="ultima_localizacao"/>
+				<th ui-table-head-th sorting-by="ordenacao" direction="direcao" name="Situa&ccedil;&atilde;o" order-by="statusUsuario"/>
+				
+				<th style="min-width: 120px;">A&ccedil;&otilde;es</th> 
+			</tr>
+			<tr ng-repeat="usuario in usuarios | filter:criterioBuscaUsuarios | orderBy:ordenacao:direcao | startFrom:startFromUsuarios | limitTo:pageSizeUsuarios">
+				<td>{{usuario.id}}</td>
+				<td>{{usuario.nome | name | ellipsis:20}}</td>
+				<td>{{usuario.idade}}</td>
+				<td>{{usuario.sexo}}</td>
+				<td></td>
+				<td>{{usuario.statusUsuario}}</td>
+				<td>
+					<div class="btn-group">
+						<button type="button" title="Marcar Usu&aacute;rio como Infectado " 
+							ng-click="selecionarUsuario(usuario)" class="btn btn-default btn-sm"
+							data-toggle="modal" data-target=".modal-confirmar">
+							<span class="glyphicon glyphicon-ok"></span>
+						</button>
+						<button type="button" title="Remover Usu&aacute;rio" ng-click="selecionarUsuario(usuario)" class="btn btn-default btn-sm" data-toggle="modal" data-target=".modal-confirmar-excluir">
+							<span class="glyphicon glyphicon-trash"></span>
+						</button>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</ui-table>
+
+
+<form name="usuarioForm" id="usuarioForm">
+	<div ng-if="apresentarFormAdicionar">
+		<legend>Adicionar Usu&aacute;rio</legend>
+		<fieldset class="fieldset-form-aling form-color">
+		
+			<div class="col-md-12">
+		
+				<ui-field-validation field="usuarioForm.nome" message="Informe o nome (m&aacute;ximo 60 caracteres)">
+					<label class="control-label" for="inputNome"><span class="obrigatorio">*</span> Nome:</label>
+					<input class="form-control" id="inputNome" type="text" ng-model="usuario.nome"
+						name="nome" ng-maxlength="60" placeholder="Nome" ng-required="true" autofocus="autofocus"/>
+				</ui-field-validation>
+				
+				<ui-field-validation field="usuarioForm.idade" message="Informe a idade">
+					<label class="control-label" for="inputIdade"><span class="obrigatorio">*</span> Idade:</label>
+					<input class="form-control" id="inputIdade" type="text" ng-model="usuario.idade"
+						name="idade" placeholder="Idade" ng-required="true"/>
+				</ui-field-validation>
+				
+				<ui-field-validation field="usuarioForm.siglaSexo" message="Selecione o Sexo do Usu&aacute;rio">
+					<label class="control-label" for="selectSexo"><span class="obrigatorio">*</span> Sexo:</label> 
+					<select class="form-control" id="selectSexo" ng-model="usuario.siglaSexo" name="siglaSexo" ng-required="true" >
+						<option value="">Selecione</option>
+						<option value="M">Masculino</option>
+						<option value="F">Feminino</option>
+					</select>
+				</ui-field-validation>
+			
+			</div>
+			
+		</fieldset>
+		
+		<div class="form-actions">
+			<button type="button" class="btn btn-default" ng-click="cancelarAdicionarUsuario()">Cancelar</button>
+			<button type="button" class="btn btn-default" ng-click="limparFormulario()">Limpar Formulario</button>
+			<button type="button" class="btn btn-primary" ng-click="salvarUsuario(usuario)" ng-disabled="usuarioForm.$invalid || isDisabledBtnSalvar">Salvar</button>
+		</div>
+	</div>
+</form>
+
+<div class="modal fade modal-confirmar-excluir" data-backdrop="static">
+	<div class="modal-dialog modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="false">&times;</button>
+			<h4 class="modal-title">Confirmar</h4>
+		</div>
+		<div class="modal-body">
+			<div align="center">
+				<h4>Confirma a exclus&atilde;o?</h4>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-warning fecharModalConfirmar" data-dismiss="modal">Fechar</button>
+			<button type="button" class="btn btn-primary" ng-click="removerUsuario(usuarioSelecionado)">Confirmar</button>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade modal-confirmar" data-backdrop="static">
+	<div class="modal-dialog modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="false">&times;</button>
+			<h4 class="modal-title">Confirmar</h4>
+		</div>
+		<div class="modal-body">
+			<div align="center">
+				<h4>Deseja marcar o usu&aacute;rio "{{usuarioSelecionado.nome}}" como infectado?</h4>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-warning fecharModalConfirmar" data-dismiss="modal">Fechar</button>
+			<button type="button" class="btn btn-primary" ng-click="marcarUsuarioComoInfectado(usuarioSelecionado)">Confirmar</button>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,8 @@
+<div class="form-group has-feedback" ng-class="{ 'has-error': field.$dirty && field.$invalid, 'has-success' : field.$valid }">
+	<div ng-transclude></div>
+	<span ng-if="field.$valid" class="glyphicon glyphicon-ok form-control-feedback"
+			ng-class="{'form-control-feedback-not-label' : notLabel}"></span>
+	<span ng-if="field.$dirty && field.$invalid" class="glyphicon glyphicon-remove form-control-feedback"
+			ng-class="{'form-control-feedback-not-label' : notLabel}"></span>
+	<p ng-if="field.$invalid && field.$dirty" class="help-block">{{message}}</p>
+</div>	
